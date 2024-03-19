@@ -1,0 +1,1 @@
+base_pet_data = {'name': 'pet', 'age': '10', 'type': 'dog'}

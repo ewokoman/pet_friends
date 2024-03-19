@@ -5,6 +5,9 @@ import os
 from helpers.const import PROJECT_DIR
 from helpers.api.api_client import AppApi
 
+pytest_plugins = [
+    'fixture.pet_fixture']
+
 
 @pytest.fixture(scope='session', autouse=True)
 def setup_logging():
