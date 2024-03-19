@@ -1,6 +1,7 @@
 from helpers.api.api_client import BaseApi
 from test_data.users import base_user
 from test_data.request_data import base_pet_data
+from checker.api.api_check import compare_dicts_by_key_values
 import pytest
 
 
@@ -32,8 +33,19 @@ def test_get_all_pets_with_valid_key(login_custom_fixture):
 @pytest.mark.parametrize('user_session_fixture', [base_user], indirect=True)
 def test_add_new_pet_with_valid_data(create_pet_fixture):
     """Проверяем что можно добавить питомца с корректными данными"""
-    status, result = create_pet_fixture
+    status, result, _ = create_pet_fixture
 
-    # Сверяем полученный ответ с ожидаемым результатом
     assert status == 200
     assert result['name'] == base_pet_data['name']
+
+
+@pytest.mark.parametrize('user_session_fixture', [base_user], indirect=True)
+def test_successful_update_pet_info(create_pet_fixture):
+    """Проверяем возможность обновления информации о питомце"""
+    status, result_add, api = create_pet_fixture
+
+    change = {'name': 'some_name', 'age': '40'}
+    status, result = api.update_pet_info(result_add['id'], change)
+
+    assert status == 200
+    compare_dicts_by_key_values(change, result)

@@ -72,7 +72,21 @@ class AppApi(BaseApi):
             result = res.json()
         except json.decoder.JSONDecodeError:
             result = res.text
-        logging.info(result)
+        return status, result
+
+    def update_pet_info(self, pet_id, change_dict) -> json:
+        """Метод отправляет запрос на сервер о обновлении данных питомуа по указанному ID и
+        возвращает статус запроса и result в формате JSON с обновлённыи данными питомца"""
+
+        headers = {'auth_key': self.api_key}
+
+        res = requests.put(self.base_url + f'/api/pets/{pet_id}', headers=headers, data=change_dict)
+        status = res.status_code
+        result = ""
+        try:
+            result = res.json()
+        except json.decoder.JSONDecodeError:
+            result = res.text
         return status, result
 
     def delete_pet(self, pet_id):

@@ -14,4 +14,4 @@ def create_pet_fixture(request, login_custom_fixture):
         api.delete_pet(result['id'])
 
     request.addfinalizer(teardown)
-    return status, result
+    return status, result, api
